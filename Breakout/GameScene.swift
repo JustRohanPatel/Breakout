@@ -21,7 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         kickBall()
-   }
+    }
     func resetGame() {
         makeBall()
         makePaddle()
@@ -38,7 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let starsBackgrounds = SKSpriteNode(texture: stars)
             starsBackgrounds.zPosition = -1
             starsBackgrounds.position = CGPoint(x: 0, y: starsBackgrounds.size.height * CGFloat(i))
-                        addChild(starsBackgrounds)
+            addChild(starsBackgrounds)
             let moveDown = SKAction.moveBy(x: 0, y: -starsBackgrounds.size.height, duration: 20)
             let moveReset = SKAction.moveBy(x: 0, y: starsBackgrounds.size.height,duration: 0)
             let moveLoop = SKAction.sequence([moveDown, moveReset, moveReset])
@@ -73,13 +73,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(ball) // add ball object to the view
     }
     func makePaddle() {
-    paddle.removeFromParent() // remove the paddle, if it exists
+        paddle.removeFromParent() // remove the paddle, if it exists
         paddle = SKSpriteNode(color: .white, size: CGSize(width: frame.width/4, height: 20))
         paddle.position = CGPoint(x: frame.midX, y: frame.minY + 125)
-    paddle.name = "paddle"
-    paddle.physicsBody = SKPhysicsBody(rectangleOf: paddle.size)
-    paddle.physicsBody?.isDynamic = false
-    addChild(paddle)
+        paddle.name = "paddle"
+        paddle.physicsBody = SKPhysicsBody(rectangleOf: paddle.size)
+        paddle.physicsBody?.isDynamic = false
+        addChild(paddle)
     }
     func makeBrick() {
         brick.removeFromParent()
@@ -108,6 +108,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             let location = touch.location(in: self)
             paddle.position.x = location.x
+        }
+    }
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node?.name == "brick" ||
+            contact.bodyB.node?.name == "brick" {
+            print("You win")
+            brick.removeFromParent()
+            ball.removeFromParent()
+        }
+        if contact.bodyA.node?.name == "loseZone" ||
+            contact.bodyB.node?.name == "loseZone" {
+            print("You lose")
+            ball.removeFromParent()
         }
     }
 }
