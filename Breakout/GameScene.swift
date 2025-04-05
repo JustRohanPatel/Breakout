@@ -189,6 +189,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if contact.bodyA.node == brick ||
                 contact.bodyB.node == brick {
                 score += 1
+                ball.physicsBody!.velocity.dx *= CGFloat(1.02)
+                brick.physicsBody!.velocity.dy *= CGFloat(1.02)
                 updateLabels()
                 if brick.color == .blue {
                     brick.color = .orange
@@ -232,6 +234,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         else {
             playLabel.text = "You Lose! Tap to play again"
+        }
+    }
+    override func update(_ currentTime: TimeInterval) {
+        if abs(ball.physicsBody!.velocity.dx) < 100 {
+            ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: Int.random(in: -3...3)))
         }
     }
 }
