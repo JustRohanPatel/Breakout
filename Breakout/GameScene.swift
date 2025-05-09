@@ -20,7 +20,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score = 0
     var lives = 3
     var removedBricks = 0
-    
     func resetGame() {
         // this stuff happens before each game starts
         makeBall ()
